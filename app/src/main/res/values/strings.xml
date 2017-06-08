@@ -1,3 +1,51 @@
 <resources>
-    <string name="app_name">AndroidScreenCaster</string>
+    <string name="app_name">ScreenCaster</string>
+    <string name="label_protocol">Protocol</string>
+    <string name="label_server_ip">Server IP</string>
+    <string name="label_video_format">Format</string>
+    <string name="label_video_resolution">Resolution</string>
+    <string name="label_video_bitrate">Bitrate</string>
+    <string name="action_start">Start</string>
+    <string name="action_stop">Stop</string>
+
+    <string-array name="options_protocols">
+        <item>TCP</item>
+        <item>UDP</item>
+    </string-array>
+
+    <string-array name="options_format_keys">
+        <item>H264</item>
+        <item>VP8</item>
+    </string-array>
+
+    <string-array name="options_format_values">
+        <item>video/avc</item>
+        <item>video/x-vnd.on2.vp8</item>
+    </string-array>
+
+    <string-array name="options_resolution_keys">
+        <item>1280x720 @ 320</item>
+        <item>800x480 @ 160</item>
+        <item>640x360 @ 96</item>
+    </string-array>
+
+    <string-array name="options_resolution_values">
+        <item>1280,720,320</item>
+        <item>800,480,160</item>
+        <item>640,360,96</item>
+    </string-array>
+
+    <string-array name="options_bitrate_keys">
+        <item>6 Mbps</item>
+        <item>4 Mbps</item>
+        <item>2 Mbps</item>
+        <item>1 Mbps</item>
+    </string-array>
+
+    <integer-array name="options_bitrate_values">
+        <item>6144000</item>
+        <item>4096000</item>
+        <item>2048000</item>
+        <item>1024000</item>
+    </integer-array>
 </resources>

@@ -6,13 +6,94 @@
     android:layout_height="match_parent"
     tools:context="com.github.magicsih.androidscreencaster.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:layout_width="368dp"
+        android:layout_height="495dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="8dp">
+
+        <TextView
+            android:id="@+id/textView_protocol"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_protocol" />
+
+        <Spinner
+            android:id="@+id/spinner_protocol"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/options_protocols" />
+
+        <TextView
+            android:id="@+id/textView_server_addr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_server_addr" />
+
+        <EditText
+            android:id="@+id/editText_server_host"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="none" />
+
+        <TextView
+            android:id="@+id/textView_video_format"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_video_format" />
+
+        <Spinner
+            android:id="@+id/spinner_video_format"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/options_format_keys" />
+
+        <TextView
+            android:id="@+id/textView_video_resolution"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_video_resolution" />
+
+        <Spinner
+            android:id="@+id/spinner_video_resolution"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/options_resolution_keys" />
+
+        <TextView
+            android:id="@+id/textView_video_bitrate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_video_bitrate" />
+
+        <Spinner
+            android:id="@+id/spinner_video_bitrate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/options_bitrate_keys" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button_stop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/action_stop" />
+
+            <Button
+                android:id="@+id/button_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/action_start" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

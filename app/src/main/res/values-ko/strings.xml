@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">스크린캐스터</string>
+    <string name="action_start">시작</string>
+    <string name="action_stop">중지</string>
+    <string name="label_server_addr">서버주소</string>
+    <string name="label_video_bitrate">비트레이트</string>
+    <string name="label_video_format">포맷</string>
+    <string name="label_video_resolution">해상도</string>
+</resources>
