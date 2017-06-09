@@ -26,6 +26,7 @@ The second approach was encoding our media data by using well known codecs such 
 1. Put your remote host address(eg.IP)
 2. Choose format as H.264
 3. Tap Start
+4. Do some other jobs to make ffmpeg receiving enough media data.
 
 # SERVER SIDE FFMPEG COMMANDS
 ## PLAY
