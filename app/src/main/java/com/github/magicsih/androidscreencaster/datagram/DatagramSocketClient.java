@@ -1,4 +1,4 @@
-package com.github.magicsih.androidscreencaster;
+package com.github.magicsih.androidscreencaster.datagram;
 
 import android.os.AsyncTask;
 import android.os.Handler;

@@ -20,6 +20,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.github.magicsih.androidscreencaster.consts.ActivityServiceMessage;
+import com.github.magicsih.androidscreencaster.consts.ExtraIntent;
+import com.github.magicsih.androidscreencaster.service.ScreenCastService;
+
 public class MainActivity extends Activity {
 
     private static final String TAG = "MainActivity";
@@ -51,6 +55,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         if(savedInstanceState != null) {
@@ -101,11 +106,8 @@ public class MainActivity extends Activity {
                 Log.d(TAG, "Start button clicked.");
 
                 final String serverHost = editTextServerHost.getText().toString();
-                context.getSharedPreferences(PREFERENCE_KEY, 0).edit().putString(PREFERENCE_SERVER_HOST, serverHost).commit();
-
-                if(serverHost != null) {
-                    startCaptureScreen();
-                }
+                context.getSharedPreferences(PREFERENCE_KEY, 0).edit().putString(PREFERENCE_SERVER_HOST, serverHost).apply();
+                startCaptureScreen();
             }
         });
 
@@ -182,12 +184,12 @@ public class MainActivity extends Activity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                context.getSharedPreferences(PREFERENCE_KEY, 0).edit().putInt(preferenceId, position).commit();
+                context.getSharedPreferences(PREFERENCE_KEY, 0).edit().putInt(preferenceId, position).apply();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                context.getSharedPreferences(PREFERENCE_KEY, 0).edit().putInt(preferenceId, 0).commit();
+                context.getSharedPreferences(PREFERENCE_KEY, 0).edit().putInt(preferenceId, 0).apply();
             }
         });
         spinner.setSelection(context.getSharedPreferences(PREFERENCE_KEY, 0).getInt(preferenceId, 0));
@@ -201,7 +203,7 @@ public class MainActivity extends Activity {
 
         final Intent intent = new Intent(this, ScreenCastService.class);
 
-        if(stateResultCode != 0 && stateResultData != null && serverHost != null) {
+        if(stateResultCode != 0 && stateResultData != null) {
             final Spinner protocolSpinner = (Spinner) findViewById(R.id.spinner_protocol);
             final Spinner videoFormatSpinner = (Spinner) findViewById(R.id.spinner_video_format);
             final Spinner videoResolutionSpinner = (Spinner) findViewById(R.id.spinner_video_resolution);

@@ -1,4 +1,4 @@
-package com.github.magicsih.androidscreencaster;
+package com.github.magicsih.androidscreencaster.datagram;
 
 import android.os.AsyncTask;
 
@@ -29,10 +29,8 @@ public class DatagramPacketSendTask extends AsyncTask<byte[],Void,Boolean> {
     @Override
     protected Boolean doInBackground(byte[]... bytes) {
         for(byte[] b : bytes){
-            DatagramPacket p = null;
             try {
-                p = new DatagramPacket(b, b.length,  inetAddress, port);
-                udpSocket.send(p);
+                udpSocket.send(new DatagramPacket(b, b.length,  inetAddress, port));
             } catch (IOException e) {
                 e.printStackTrace();
             }

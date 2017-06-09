@@ -1,4 +1,4 @@
-package com.github.magicsih.androidscreencaster;
+package com.github.magicsih.androidscreencaster.service;
 
 import android.app.Service;
 import android.content.Context;
@@ -16,9 +16,14 @@ import android.os.Messenger;
 import android.util.Log;
 import android.view.Surface;
 
+import com.github.magicsih.androidscreencaster.consts.ActivityServiceMessage;
+import com.github.magicsih.androidscreencaster.consts.ExtraIntent;
+import com.github.magicsih.androidscreencaster.datagram.DatagramPacketSendTask;
+import com.github.magicsih.androidscreencaster.datagram.DatagramSocketClient;
+import com.github.magicsih.androidscreencaster.writer.IvfWriter;
+
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -29,7 +34,7 @@ import java.nio.ByteBuffer;
  */
 public final class ScreenCastService extends Service {
 
-    private static final int FPS = 15;
+    private static final int FPS = 30;
     private final String TAG = "ScreenCastService";
 
     private MediaProjectionManager mediaProjectionManager;
@@ -44,7 +49,8 @@ public final class ScreenCastService extends Service {
     private Surface inputSurface;
     private VirtualDisplay virtualDisplay;
     private MediaCodec.BufferInfo videoBufferInfo;
-    private MediaCodec mediaCodec;
+    private MediaCodec encoder;
+    private IvfWriter ivf;
 
     private InetAddress remoteHost;
     private int remotePort;
@@ -155,72 +161,110 @@ public final class ScreenCastService extends Service {
         this.videoBufferInfo = new MediaCodec.BufferInfo();
         MediaFormat mediaFormat = MediaFormat.createVideoFormat(format, width, height);
 
-        mediaFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
+        mediaFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420Flexible);
         mediaFormat.setInteger(MediaFormat.KEY_BIT_RATE, bitrate);
         mediaFormat.setInteger(MediaFormat.KEY_FRAME_RATE, FPS);
-        mediaFormat.setInteger(MediaFormat.KEY_CAPTURE_RATE, FPS);
-        mediaFormat.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 5);
+        mediaFormat.setInteger(MediaFormat.KEY_CHANNEL_COUNT, 0);
+        mediaFormat.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 1);
 
         try {
 
-            this.mediaCodec = MediaCodec.createEncoderByType(format);
-            this.mediaCodec.setCallback(new MediaCodec.Callback(){
+            switch (format) {
+                case MediaFormat.MIMETYPE_VIDEO_AVC:
+                    // AVC
+                    this.encoder = MediaCodec.createEncoderByType(format);
+                    this.encoder.setCallback(new MediaCodec.Callback() {
+                        @Override
+                        public void onInputBufferAvailable(MediaCodec codec, int inputBufferId) {
+                        }
 
-                @Override
-                public void onInputBufferAvailable(MediaCodec codec, int inputBufferId) {
-
-                }
-
-                @Override
-                public void onOutputBufferAvailable(MediaCodec codec, int outputBufferId, MediaCodec.BufferInfo info) {
-                    ByteBuffer outputBuffer = codec.getOutputBuffer(outputBufferId);
-                    if(info.size > 0) {
-                        outputBuffer.position(info.offset);
-                        outputBuffer.limit(info.offset + info.size);
-
-                        if(socketOutputStream != null) {
-                            byte[] b = new byte[outputBuffer.remaining()];
-                            outputBuffer.get(b);
-                            try {
-                                socketOutputStream.write(b);
-                            } catch (IOException e) {
-                                Log.e(TAG, "Failed to write data to tcp socket, stop casting");
-                                e.printStackTrace();
+                        @Override
+                        public void onOutputBufferAvailable(MediaCodec codec, int outputBufferId, MediaCodec.BufferInfo info) {
+                            ByteBuffer outputBuffer = codec.getOutputBuffer(outputBufferId);
+                            if (info.size > 0 && outputBuffer != null) {
+                                outputBuffer.position(info.offset);
+                                outputBuffer.limit(info.offset + info.size);
+                                byte[] b = new byte[outputBuffer.remaining()];
+                                outputBuffer.get(b);
+                                sendData(null, b);
+                            }
+                            if (encoder != null) {
+                                encoder.releaseOutputBuffer(outputBufferId, false);
+                            }
+                            if ((videoBufferInfo.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
+                                Log.i(TAG, "End of Stream");
                                 stopScreenCapture();
                             }
-                        } else if(datagramSocketClient != null) {
-                            byte[] b = new byte[outputBuffer.remaining()];
-                            outputBuffer.get(b);
-                            DatagramPacketSendTask t = new DatagramPacketSendTask(datagramSocketClient.getDatagramSocket(), remoteHost, remotePort);
-                            datagramSocketClient.send(t, b);
-                        } else{
-                            Log.e(TAG, "Both tcp and udp socket are not available.");
-                            stopScreenCapture();
                         }
-                    }
-                    if(mediaCodec != null) {
-                        mediaCodec.releaseOutputBuffer(outputBufferId, false);
-                    }
-                    if ((videoBufferInfo.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
-                        Log.i(TAG, "End of Stream");
-                        return;
-                    }
-                }
 
-                @Override
-                public void onError(MediaCodec codec, MediaCodec.CodecException e) {
-                    e.printStackTrace();
-                }
+                        @Override
+                        public void onError(MediaCodec codec, MediaCodec.CodecException e) {
+                            e.printStackTrace();
+                        }
 
-                @Override
-                public void onOutputFormatChanged(MediaCodec codec, MediaFormat format) {
-                    Log.i(TAG, "onOutputFormatChanged. CodecInfo:" + codec.getCodecInfo().toString() + " MediaFormat:" + format.toString());
-                }
-            });
+                        @Override
+                        public void onOutputFormatChanged(MediaCodec codec, MediaFormat format) {
+                            Log.i(TAG, "onOutputFormatChanged. CodecInfo:" + codec.getCodecInfo().toString() + " MediaFormat:" + format.toString());
+                        }
+                    });
+                    break;
+                case MediaFormat.MIMETYPE_VIDEO_VP8:
+                    final int frameSize = width * height * 3 / 2;
+                    //VP8
+                    byte[] ivfHeader = IvfWriter.makeIvfHeader(0, width, height, 1, bitrate);
+                    sendData(null, ivfHeader);
 
-            this.mediaCodec.configure(mediaFormat, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
-            this.inputSurface = this.mediaCodec.createInputSurface();
-            this.mediaCodec.start();
+                    this.encoder = MediaCodec.createByCodecName("OMX.google.vp8.encoder");
+//                this.encoder = MediaCodec.createEncoderByType(format);
+                    this.encoder.setCallback(new MediaCodec.Callback() {
+                        @Override
+                        public void onInputBufferAvailable(MediaCodec codec, int inputBufIndex) {
+                        }
+
+                        @Override
+                        public void onOutputBufferAvailable(MediaCodec codec, int outputBufferId, MediaCodec.BufferInfo info) {
+                            ByteBuffer outputBuffer = codec.getOutputBuffer(outputBufferId);
+                            if (info.size > 0 && outputBuffer != null) {
+                                outputBuffer.position(info.offset);
+                                outputBuffer.limit(info.offset + info.size);
+
+                                byte[] header = IvfWriter.makeIvfFrameHeader(outputBuffer.remaining(), info.presentationTimeUs);
+                                byte[] b = new byte[outputBuffer.remaining()];
+                                outputBuffer.get(b);
+
+                                sendData(header, b);
+                            }
+                            if (encoder != null) {
+                                encoder.releaseOutputBuffer(outputBufferId, false);
+                            }
+                            if ((videoBufferInfo.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
+                                Log.i(TAG, "End of Stream");
+                                stopScreenCapture();
+                            }
+                        }
+
+                        @Override
+                        public void onError(MediaCodec codec, MediaCodec.CodecException e) {
+                            e.printStackTrace();
+                        }
+
+                        @Override
+                        public void onOutputFormatChanged(MediaCodec codec, MediaFormat format) {
+                            Log.i(TAG, "onOutputFormatChanged. CodecInfo:" + codec.getCodecInfo().toString() + " MediaFormat:" + format.toString());
+                        }
+                    });
+                    break;
+                default:
+                    throw new RuntimeException("Unknown Media Format. You need to add mimetype to string.xml and else if statement");
+            }
+
+            this.encoder.configure(mediaFormat
+                                    , null // surface
+                                    , null // crypto
+                                    , MediaCodec.CONFIGURE_FLAG_ENCODE);
+
+            this.inputSurface = this.encoder.createInputSurface();
+            this.encoder.start();
 
         } catch (IOException e) {
             Log.e(TAG, "Failed to initial encoder, e: " + e);
@@ -228,6 +272,34 @@ public final class ScreenCastService extends Service {
         }
 
         this.virtualDisplay = this.mediaProjection.createVirtualDisplay("Recording Display", width, height, dpi, 0, this.inputSurface, null, null);
+    }
+
+    private void sendData(byte[] header, byte[] data) {
+        if(socketOutputStream != null) {
+            try {
+                if(header != null) {
+                    socketOutputStream.write(header);
+                }
+                socketOutputStream.write(data);
+            } catch (IOException e) {
+                Log.e(TAG, "Failed to write data to tcp socket, stop casting");
+                e.printStackTrace();
+                stopScreenCapture();
+            }
+        } else if(datagramSocketClient != null) {
+            DatagramPacketSendTask t = new DatagramPacketSendTask(datagramSocketClient.getDatagramSocket(), remoteHost, remotePort);
+            if(header != null) {
+                byte[] headerAndBody = new byte[header.length + data.length];
+                System.arraycopy(header, 0, headerAndBody, 0, header.length);
+                System.arraycopy(data, 0, headerAndBody, header.length, data.length);
+                datagramSocketClient.send(t, headerAndBody);
+            } else{
+                datagramSocketClient.send(t, data);
+            }
+        } else{
+            Log.e(TAG, "Both tcp and udp socket are not available.");
+            stopScreenCapture();
+        }
     }
 
     private void stopScreenCapture() {
@@ -242,10 +314,10 @@ public final class ScreenCastService extends Service {
 
     private void releaseEncoders() {
 
-        if (mediaCodec != null) {
-            mediaCodec.stop();
-            mediaCodec.release();
-            mediaCodec = null;
+        if (encoder != null) {
+            encoder.stop();
+            encoder.release();
+            encoder = null;
         }
         if (inputSurface != null) {
             inputSurface.release();
@@ -254,6 +326,10 @@ public final class ScreenCastService extends Service {
         if (mediaProjection != null) {
             mediaProjection.stop();
             mediaProjection = null;
+        }
+
+        if(ivf != null) {
+            ivf = null;
         }
 
         videoBufferInfo = null;
@@ -308,6 +384,5 @@ public final class ScreenCastService extends Service {
                 socketOutputStream = null;
             }
         }
-
     }
 }

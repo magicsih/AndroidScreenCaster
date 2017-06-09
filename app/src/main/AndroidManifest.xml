@@ -24,7 +24,7 @@
         </activity>
 
         <service
-            android:name=".ScreenCastService"
+            android:name=".service.ScreenCastService"
             android:process=":remote"
             android:enabled="true"
             android:exported="true"/>
