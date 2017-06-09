@@ -48,3 +48,5 @@ The second approach was encoding our media data by using well known codecs such 
 # Reference
 - https://android.googlesource.com/platform/cts/+/lollipop-release/tests/tests/media/src/android/media/cts
 - https://trac.ffmpeg.org/wiki/StreamingGuide
+- https://trac.ffmpeg.org/wiki/Encode/VP8
+- https://trac.ffmpeg.org/wiki/Encode/H.264
