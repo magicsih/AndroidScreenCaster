@@ -42,8 +42,13 @@ The second approach was encoding our media data by using well known codecs such 
 ### UDP+H264
 ```ffmpeg -i udp://@:49152 -framerate 60 -codec:v libx264 -profile:v baseline -preset medium -b:v 250k -maxrate 250k -bufsize 500k -vf scale=-1:360 -an -threads 0 output.mp4```
 
+#### if you need to make play speed faster. one more encode to output.mp4
+```ffmpeg -i output.mp4 -vf "setpts=(1/2)*PTS" fast_output.mp4```
+
+
 ### UDP+VP8
 ```ffmpeg -i udp://@:49152 -c:v libvpx -b:v 1M -c:a libvorbis output.webm```
+
 
 # Reference
 - https://android.googlesource.com/platform/cts/+/lollipop-release/tests/tests/media/src/android/media/cts
