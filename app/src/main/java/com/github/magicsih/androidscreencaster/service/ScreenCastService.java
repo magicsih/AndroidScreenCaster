@@ -161,7 +161,6 @@ public final class ScreenCastService extends Service {
         this.videoBufferInfo = new MediaCodec.BufferInfo();
         MediaFormat mediaFormat = MediaFormat.createVideoFormat(format, width, height);
 
-        mediaFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420Flexible);
         mediaFormat.setInteger(MediaFormat.KEY_BIT_RATE, bitrate);
         mediaFormat.setInteger(MediaFormat.KEY_FRAME_RATE, FPS);
         mediaFormat.setInteger(MediaFormat.KEY_CHANNEL_COUNT, 0);
@@ -172,6 +171,8 @@ public final class ScreenCastService extends Service {
             switch (format) {
                 case MediaFormat.MIMETYPE_VIDEO_AVC:
                     // AVC
+                    mediaFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
+
                     this.encoder = MediaCodec.createEncoderByType(format);
                     this.encoder.setCallback(new MediaCodec.Callback() {
                         @Override
@@ -209,6 +210,7 @@ public final class ScreenCastService extends Service {
                     });
                     break;
                 case MediaFormat.MIMETYPE_VIDEO_VP8:
+                    mediaFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420Flexible);
                     final int frameSize = width * height * 3 / 2;
                     //VP8
                     byte[] ivfHeader = IvfWriter.makeIvfHeader(0, width, height, 1, bitrate);
