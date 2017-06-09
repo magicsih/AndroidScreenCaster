@@ -6,6 +6,9 @@ I'm currently in charge of test automation team. We try to make possible functio
 
 The second approach was encoding our media data by using well known codecs such as h264 and vp8. It ended up a success anyway. However, it was hard to find code examples. I mostly refer to android googlesource(specially media test cases). I hope this project helps you to save your time and understand concept of live screen casting on Android.
 
+# DEMO
+[![Demo](https://img.youtube.com/vi/VID/0.jpg)](https://www.youtube.com/watch?v=2AN6EfArfZE)
+
 # TEST DEVICE
 - Samsung Galaxy S7 edge (Android 6.0)
 
@@ -13,7 +16,7 @@ The second approach was encoding our media data by using well known codecs such 
 - ffmpeg on server (demonstrating works well)
 
 # SCREENSHOT
-![Alt text](screenshot.jpg "Screenshot")
+![Screenshot](screenshot.jpg "Screenshot")
 
 # QUICK START
 ## SERVER SIDE
