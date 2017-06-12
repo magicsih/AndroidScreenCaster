@@ -20,7 +20,7 @@ The second approach was encoding our media data by using well known codecs such 
 
 # QUICK START
 ## SERVER SIDE
-- ```ffplay -framerate 60 -i tcp://<your ip here>:49152?listen```
+- ```ffplay -framerate 60 -i tcp://<your server ip here>:49152?listen```
 
 ## CLIENT SIDE(THIS APP)
 1. Put your remote host address(eg.IP)
@@ -31,9 +31,9 @@ The second approach was encoding our media data by using well known codecs such 
 # SERVER SIDE FFMPEG COMMANDS
 ## PLAY
 ### TCP+H264
-```ffplay -framerate 60 -i tcp://<your ip here>:49152?listen```
+```ffplay -framerate 60 -i tcp://<your server ip here>:49152?listen```
 ### TCP+VP8
-```ffplay -i tcp://<your ip here>:49152?listen```
+```ffplay -i tcp://<your server ip here>:49152?listen```
 ### UDP+H264
 ```ffplay -framerate 60 -i udp://@:49152```
 ### UDP+VP8
