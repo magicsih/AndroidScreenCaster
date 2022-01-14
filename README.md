@@ -56,3 +56,6 @@ The second approach was encoding our media data by using well known codecs such 
 - https://trac.ffmpeg.org/wiki/StreamingGuide
 - https://trac.ffmpeg.org/wiki/Encode/VP8
 - https://trac.ffmpeg.org/wiki/Encode/H.264
+
+# License (MIT)
+This project is licensed under the terms of the MIT license.
