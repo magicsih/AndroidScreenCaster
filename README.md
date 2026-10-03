@@ -90,9 +90,19 @@ See [the validation report](docs/VALIDATION.md) for exact Android versions, code
 
 The screenshot is an API 37 emulator at 480×800. Its `127.0.0.1` receiver address uses the optional ADB forwarding setup below.
 
+## Optional browser viewer
+
+For browser playback, run the companion
+[AndroidScreenCasterWeb](https://github.com/magicsih/AndroidScreenCasterWeb) server.
+It receives the existing APK's **TCP/H.264** stream and uses FFmpeg and MediaMTX
+to deliver WebRTC video to a browser. Start it with Docker Compose, then follow
+its setup instructions. See the [companion validation report](https://github.com/magicsih/AndroidScreenCasterWeb/blob/main/docs/VALIDATION.md)
+for actual device/browser checks and limits. Both examples are intended for
+trusted networks and transmit video only.
+
 ## FAQ and troubleshooting
 
-**Does this play directly in a browser?** No. A browser cannot consume this raw TCP/UDP stream directly. You would need a separate gateway to a browser-supported transport/container, such as WebRTC. This repository does not implement that gateway.
+**Does this play directly in a browser?** A browser cannot consume this raw TCP/UDP stream directly. The optional [AndroidScreenCasterWeb](https://github.com/magicsih/AndroidScreenCasterWeb) companion provides a TCP/H.264 → WebRTC gateway. The Android app itself keeps its existing raw streaming format.
 
 **Do I need a client and a custom server?** Install the Android APK as the sender. FFplay or FFmpeg is the receiver; no server application needs to be compiled.
 
