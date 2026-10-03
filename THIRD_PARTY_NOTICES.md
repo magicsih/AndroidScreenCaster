@@ -13,3 +13,7 @@ Its Apache License 2.0 copyright/license notice remains in the source. A copy of
 The generated Gradle wrapper scripts and JAR are distributed under Apache License 2.0. The scripts retain their original notices. See [Gradle's licensing information](https://github.com/gradle/gradle/blob/master/LICENSE) and the bundled license above.
 
 JUnit is used only to run development tests; there are no external runtime library dependencies in the example APK.
+
+## Project website fonts
+
+The website bundles Manrope and IBM Plex Mono from [Google Fonts](https://github.com/google/fonts), under the SIL Open Font License 1.1. Their original license and copyright texts are included in [Manrope's notice](site/assets/manrope-OFL.txt) and [IBM Plex Mono's notice](site/assets/plex-mono-OFL.txt). The project-wide MIT license does not replace these font licenses.
