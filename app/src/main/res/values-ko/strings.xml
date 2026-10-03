@@ -3,8 +3,26 @@
     <string name="app_name">스크린캐스터</string>
     <string name="action_start">시작</string>
     <string name="action_stop">중지</string>
-    <string name="label_server_addr">서버주소</string>
+    <string name="label_server_ip">수신기 주소</string>
     <string name="label_video_bitrate">비트레이트</string>
     <string name="label_video_format">포맷</string>
     <string name="label_video_resolution">해상도</string>
+    <string name="label_protocol">전송 방식</string>
+    <string name="intro">화면을 FFmpeg / FFplay로 전송합니다. 수신기를 먼저 실행한 뒤 화면 캡처를 허용하세요.</string>
+    <string name="host_hint">192.168.1.10</string>
+    <string name="error_host">URL이나 포트 없이 IP 주소 또는 호스트 이름을 입력하세요.</string>
+    <string name="status_idle">준비됨 · 수신기 포트 49152</string>
+    <string name="status_consent">화면 캡처 허용을 기다리는 중…</string>
+    <string name="status_consent_denied">화면 캡처가 허용되지 않았습니다. 시작을 눌러 다시 시도하세요.</string>
+    <string name="status_connecting">수신기에 연결하는 중…</string>
+    <string name="status_casting">TCP로 화면 영상을 전송하는 중</string>
+    <string name="status_udp">UDP로 화면 영상을 전송하는 중 · 수신 여부는 확인되지 않음</string>
+    <string name="status_stopping">화면 캡처를 중지하는 중…</string>
+    <string name="status_disconnected">서비스 연결이 끊겼습니다. 앱을 다시 열어 연결하세요.</string>
+    <string name="network_notice">영상만 전송하며 소리는 없습니다. 암호화와 인증이 없는 예제이므로 신뢰할 수 있는 네트워크에서 사용하세요. UDP 데이터는 유실될 수 있습니다.</string>
+    <string name="notification_channel">화면 캡처</string>
+    <string name="notification_title">스크린캐스터가 화면을 공유하고 있습니다</string>
+    <string name="notification_text">중지를 누르면 캡처와 연결이 종료됩니다.</string>
+    <string name="status_network_permission">수신기에 연결하려면 로컬 네트워크 접근을 허용하세요.</string>
+    <string name="status_network_denied">로컬 네트워크 접근이 거절됐습니다. 앱 설정에서 근처 기기 권한을 허용한 뒤 시작을 누르세요.</string>
 </resources>

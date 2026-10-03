@@ -1,98 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.github.magicsih.androidscreencaster.MainActivity">
-
-    <LinearLayout
-        android:layout_width="368dp"
-        android:layout_height="495dp"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteY="8dp"
-        tools:layout_editor_absoluteX="8dp">
-
-        <TextView
-            android:id="@+id/textView_protocol"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/label_protocol" />
-
-        <Spinner
-            android:id="@+id/spinner_protocol"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/options_protocols" />
-
-        <TextView
-            android:id="@+id/textView_server_addr"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root" android:layout_width="match_parent" android:layout_height="match_parent"
+    android:fillViewport="true">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:padding="20dp">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="@string/intro" android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginBottom="20dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
             android:text="@string/label_server_ip" />
-
-        <EditText
-            android:id="@+id/editText_server_host"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="none" />
-
-        <TextView
-            android:id="@+id/textView_video_format"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/label_video_format" />
-
-        <Spinner
-            android:id="@+id/spinner_video_format"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/options_format_keys" />
-
-        <TextView
-            android:id="@+id/textView_video_resolution"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/label_video_resolution" />
-
-        <Spinner
-            android:id="@+id/spinner_video_resolution"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/options_resolution_keys" />
-
-        <TextView
-            android:id="@+id/textView_video_bitrate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/label_video_bitrate" />
-
-        <Spinner
-            android:id="@+id/spinner_video_bitrate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/options_bitrate_keys" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/button_stop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/action_stop" />
-
-            <Button
-                android:id="@+id/button_start"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/action_start" />
+        <EditText android:id="@+id/editText_server_host" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:minHeight="48dp" android:inputType="textUri"
+            android:singleLine="true" android:hint="@string/host_hint" android:importantForAutofill="no" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="@string/label_protocol" android:labelFor="@id/spinner_protocol" />
+        <Spinner android:id="@+id/spinner_protocol" android:layout_width="match_parent"
+            android:layout_height="48dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="@string/label_video_format" android:labelFor="@id/spinner_video_format" />
+        <Spinner android:id="@+id/spinner_video_format" android:layout_width="match_parent"
+            android:layout_height="48dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="@string/label_video_resolution" android:labelFor="@id/spinner_video_resolution" />
+        <Spinner android:id="@+id/spinner_video_resolution" android:layout_width="match_parent"
+            android:layout_height="48dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="@string/label_video_bitrate" android:labelFor="@id/spinner_video_bitrate" />
+        <Spinner android:id="@+id/spinner_video_bitrate" android:layout_width="match_parent"
+            android:layout_height="48dp" />
+        <TextView android:id="@+id/text_status" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="16dp"
+            android:accessibilityLiveRegion="polite" android:text="@string/status_idle"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:layout_marginTop="12dp"
+            style="?android:attr/buttonBarStyle">
+            <Button style="?android:attr/buttonBarButtonStyle" android:id="@+id/button_start" android:layout_width="0dp" android:layout_weight="1"
+                android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/action_start" />
+            <Button style="?android:attr/buttonBarButtonStyle" android:id="@+id/button_stop" android:layout_width="0dp" android:layout_weight="1"
+                android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/action_stop"
+                android:enabled="false" />
         </LinearLayout>
-
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="@string/network_notice" android:layout_marginTop="16dp" />
     </LinearLayout>
-
-</android.support.constraint.ConstraintLayout>
+</ScrollView>

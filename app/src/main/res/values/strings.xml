@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ScreenCaster</string>
     <string name="label_protocol">Protocol</string>
-    <string name="label_server_ip">Server IP</string>
+    <string name="label_server_ip">Receiver address</string>
     <string name="label_video_format">Format</string>
     <string name="label_video_resolution">Resolution</string>
     <string name="label_video_bitrate">Bitrate</string>
@@ -48,4 +48,21 @@
         <item>2048000</item>
         <item>1024000</item>
     </integer-array>
+    <string name="intro">Stream your screen to FFmpeg / FFplay. Start the receiver first, then approve screen capture.</string>
+    <string name="host_hint">192.168.1.10</string>
+    <string name="error_host">Enter an IP address or hostname, without a URL or port.</string>
+    <string name="status_idle">Ready · receiver port 49152</string>
+    <string name="status_consent">Waiting for screen capture permission…</string>
+    <string name="status_consent_denied">Screen capture was not approved. Tap Start to try again.</string>
+    <string name="status_connecting">Connecting to receiver…</string>
+    <string name="status_casting">Sending screen video over TCP</string>
+    <string name="status_udp">Sending screen video over UDP · delivery is not confirmed</string>
+    <string name="status_stopping">Stopping screen capture…</string>
+    <string name="status_disconnected">Capture service disconnected. Reopen the app to reconnect.</string>
+    <string name="network_notice">Video only · no audio. Use a trusted network: this example has no encryption or authentication. UDP may lose data.</string>
+    <string name="notification_channel">Screen capture</string>
+    <string name="notification_title">ScreenCaster is sharing your screen</string>
+    <string name="notification_text">Tap Stop to end capture and disconnect.</string>
+    <string name="status_network_permission">Allow local network access to connect to your receiver.</string>
+    <string name="status_network_denied">Local network access was denied. Allow Nearby devices in app settings, then tap Start.</string>
 </resources>
