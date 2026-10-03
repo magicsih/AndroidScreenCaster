@@ -1,0 +1,50 @@
+name: Bug report
+description: Report a reproducible capture, encoding, network, or UI defect.
+title: '[Bug] '
+body:
+  - type: markdown
+    attributes:
+      value: 'For usage questions, please use Discussions. Report vulnerabilities privately through SECURITY.md. Do not include private screen contents or credentials.'
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Include expected and actual behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Include the receiver command, Start/Stop sequence, and whether consent was approved.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Device, Android version, and APK version or commit
+      placeholder: 'Pixel 8, Android 16/API 36, v0.2.0'
+    validations:
+      required: true
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Transport / codec
+      options:
+        - TCP / H.264
+        - TCP / VP8
+        - UDP / H.264
+        - UDP / VP8
+        - UI or build issue
+    validations:
+      required: true
+  - type: textarea
+    id: settings
+    attributes:
+      label: Resolution, bitrate, network, and receiver
+      description: Include FFmpeg version and whether the firewall/receiver port is reachable.
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs and screenshots
+      description: 'Remove private data. Useful logs: adb logcat -s ScreenCastService and FFmpeg stderr.'

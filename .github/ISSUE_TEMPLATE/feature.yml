@@ -1,0 +1,23 @@
+name: Feature request
+description: Propose an improvement to the developer example.
+title: '[Feature] '
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: What problem would this solve?
+      description: Describe the intended user or developer workflow.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior and alternatives
+      description: Explain the expected result and any simpler alternatives.
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility and validation
+      description: How would this affect Android 5.0 support, wire formats, dependencies, consent, and tests?
