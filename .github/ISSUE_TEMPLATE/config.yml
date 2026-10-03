@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Usage questions
+    url: https://github.com/magicsih/AndroidScreenCaster/discussions
+    about: Ask about building, connecting, receivers, or device compatibility.
+  - name: Private vulnerability report
+    url: https://github.com/magicsih/AndroidScreenCaster/security/advisories/new
+    about: Report a security vulnerability without publishing sensitive details.
