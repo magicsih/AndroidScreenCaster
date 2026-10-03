@@ -58,8 +58,10 @@ in the property's Sitemaps screen, then inspect the homepage and request indexin
 Indexing and search ranking are not guaranteed. Verifying the Pages address does
 not verify either `github.com` repository address.
 
-No verification token is invented or included by default. Search Console setup
-requires the token issued for the intended Google account and property.
+The page includes the verification tag provided by the repository owner.
+Complete verification in the intended Search Console account and property after
+the tag is publicly deployed. The presence of the tag alone does not establish
+verification or indexing success.
 
 - [Google ownership verification](https://support.google.com/webmasters/answer/9008080)
 - [Google recrawl requests](https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl)
