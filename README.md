@@ -6,6 +6,14 @@
 
 A Java **Android screen mirroring** example using **MediaProjection** for capture and **MediaCodec** for H.264 or VP8 encoding. It sends video over TCP or UDP to **FFmpeg / FFplay**, demonstrating the complete capture → encode → transmit path on Android 5.0 (API 21) and later, when a suitable Surface encoder is available.
 
+## Demo
+
+[![Watch the original Android screen mirroring demo on YouTube](https://img.youtube.com/vi/2AN6EfArfZE/0.jpg)](https://www.youtube.com/watch?v=2AN6EfArfZE)
+
+Click the thumbnail to watch the original project demo on YouTube, recorded with an earlier version.
+
+## Features
+
 - TCP + H.264, TCP + VP8, UDP + H.264, UDP + VP8; fixed receiver port **49152**.
 - H.264 uses a raw Annex B stream. VP8 uses **IVF**, not WebM.
 - Video only: **no audio**. No custom server implementation or USB connection is required for Wi-Fi/LAN streaming.
