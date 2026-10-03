@@ -16,16 +16,16 @@ The installed test APK displayed continuously moving shapes and an elapsed-time 
 | Environment | Transport / codec | Encoder | Decoded frames | Different frames | Different hashes in final 30 frames |
 | --- | --- | --- | ---: | ---: | ---: |
 | Seeker physical device, API 36 | TCP / H.264 | `c2.mtk.avc.encoder` | 3,204 | 3,194 | 30 |
-| Seeker physical device, API 36 | TCP / VP8 | `c2.android.vp8.encoder` | 3,212 | 3,212 | 30 |
-| Seeker physical device, API 36 | UDP / H.264 | `c2.mtk.avc.encoder` | 3,176 | 3,174 | 30 |
-| Seeker physical device, API 36 | UDP / VP8 | `c2.android.vp8.encoder` | 3,186 | 3,186 | 30 |
+| Seeker physical device, API 36 | TCP / VP8 | `c2.android.vp8.encoder` | 3,178 | 3,178 | 30 |
+| Seeker physical device, API 36 | UDP / H.264 | `c2.mtk.avc.encoder` | 3,183 | 3,180 | 30 |
+| Seeker physical device, API 36 | UDP / VP8 | `c2.android.vp8.encoder` | 3,183 | 3,183 | 30 |
 | ARM64 emulator, API 34 | TCP / H.264 | `c2.android.avc.encoder` | 2,443 | 2,437 | 30 |
 | ARM64 emulator, API 37 | TCP / H.264 | `c2.android.avc.encoder` | 1,961 | 1,961 | 30 |
 | ARM64 emulator, API 21 | TCP / VP8 | `OMX.google.vp8.encoder` | 964 | 961 | 30 |
 
 **Receiver details and limits:** macOS Homebrew FFmpeg was used. A macOS system service occupied TCP 49152, so TCP runs used the documented ADB reverse mapping to free local receiver ports. These are real TCP/FFmpeg decoding checks through that development route; direct Wi-Fi TCP was not separately measured.
 
-UDP traveled over the physical device's LAN to a Python UDP socket bound to port 49152. The received datagrams were forwarded, unchanged and in arrival order, to FFmpeg's H.264/IVF stdin demuxer. The receiver observed 3,507 H.264 datagrams / 2,384,740 bytes, and 3,499 VP8 datagrams / 2,359,130 bytes. The VP8 first datagram began with `DKIF` with the microsecond time base. This verifies actual LAN UDP bytes and live FFmpeg decoding. **Direct FFmpeg/FFplay UDP socket playback on this Mac did not receive data and remains unverified**; its cause was not established. No firewall/system service was changed. The README commands follow FFmpeg's standard protocol syntax, but their direct UDP playback needs validation on the user's receiver environment.
+UDP traveled over the physical device's LAN to a Python UDP socket bound to port 49152. The received datagrams were forwarded, unchanged and in arrival order, to FFmpeg's H.264/IVF stdin demuxer. The receiver observed 3,527 H.264 datagrams / 2,398,971 bytes, and 3,499 VP8 datagrams / 2,350,064 bytes. The VP8 first datagram began with `DKIF` with the microsecond time base. This verifies actual LAN UDP bytes and live FFmpeg decoding. **Direct FFmpeg/FFplay UDP socket playback on this Mac did not receive data and remains unverified**; its cause was not established. No firewall/system service was changed. The README commands follow FFmpeg's standard protocol syntax, but their direct UDP playback needs validation on the user's receiver environment.
 
 The API 21 emulator launches and passes the UI smoke test. Its old H.264 software encoder only advertises low AVC levels and fails at the example's offered sizes; 800×480 also failed during encoder initialization. **H.264 capture on API 21 hardware remains unverified.** The API 21 format-query exception was fixed by choosing an encoder by MIME/Surface capability and configuring it directly. The example does not silently change the requested size/format or restart capture.
 
@@ -39,7 +39,7 @@ The API 21 emulator launches and passes the UI smoke test. Its old H.264 softwar
 | Other app / return to sender | Moving test Activity was captured in every 125-second run; API 37 returned to the sender with the sending state and Stop enabled |
 | Rotation during capture | API 37 rotated to landscape and returned to portrait while the same capture session continued; output size stays fixed and may letterbox |
 | System sharing Stop | API 37 system sharing chip → Stop sharing: controls reset and no worker threads remained |
-| Screen lock | API 37 power/lock: system stopped capture, controls reset, no worker threads remained; no automatic restart |
+| Screen lock | API 37 with its test lock screen enabled, then power/lock: system stopped capture, controls reset, no worker threads remained; no automatic restart |
 | Foreground-notification Stop | API 34 notification Stop: controls reset and no worker threads remained |
 | Bad hostname | API 34 `does-not-exist.invalid`: resolution error displayed and no worker threads remained |
 | Receiver unavailable / closes | API 34 forwarded TCP with no receiver: broken-pipe error displayed and no worker threads remained; unit tests independently cover refused connection and write failure |
